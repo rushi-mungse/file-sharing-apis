@@ -46,16 +46,16 @@ const filesController = {
     let uuid = req.params.uuid;
     try {
       const file = await File.findOne({ uuid });
+      if (!file) return res.render("download", { error: "Link is expired." });
 
-      if (!file) return res.status(400).json({ message: "Link is expired." });
-      return res.status(200).json({
+      return res.render("download", {
         filename: file.filename,
         size: file.size,
         uuid: file.uuid,
         download: `${process.env.APP_BASE_URL}/file/download/${file.uuid}`,
       });
     } catch (error) {
-      return res.status(400).json({ error: err.message });
+      return res.render("download", { error: "Internal server error." });
     }
   },
 };
