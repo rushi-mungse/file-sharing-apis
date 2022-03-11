@@ -7,6 +7,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 connectDB();
 
-app.use("/api/files", routes);
+app.use(routes);
 
 app.listen(PORT, console.log(`Server listening on port ${PORT}`));

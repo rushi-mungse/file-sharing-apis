@@ -22,7 +22,7 @@ const upload = multer({ storage, limits: { fileSize: 100000 * 100 } }).single(
 );
 
 const filesController = {
-  async files(req, res, next) {
+  async postFile(req, res, next) {
     upload(req, res, async (err) => {
       if (err) return res.status(400).json({ error: `Internal server error.` });
 
@@ -40,6 +40,23 @@ const filesController = {
 
       res.json({ file: `${process.env.APP_BASE_URL}/files/${response.uuid}` });
     });
+  },
+
+  async getFile(req, res, next) {
+    let uuid = req.params.uuid;
+    try {
+      const file = await File.findOne({ uuid });
+
+      if (!file) return res.status(400).json({ message: "Link is expired." });
+      return res.status(200).json({
+        filename: file.filename,
+        size: file.size,
+        uuid: file.uuid,
+        download: `${process.env.APP_BASE_URL}/file/download/${file.uuid}`,
+      });
+    } catch (error) {
+      return res.status(400).json({ error: err.message });
+    }
   },
 };
 
