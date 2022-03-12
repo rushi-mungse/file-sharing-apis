@@ -49,10 +49,10 @@ const filesController = {
       if (!file) return res.render("download", { error: "Link is expired." });
 
       return res.render("download", {
-        filename: file.filename,
-        size: file.size,
+        fileName: file.filename,
+        fileSize: file.size,
         uuid: file.uuid,
-        download: `${process.env.APP_BASE_URL}/file/download/${file.uuid}`,
+        downloadLink: `${process.env.APP_BASE_URL}/file/download/${file.uuid}`,
       });
     } catch (error) {
       return res.render("download", { error: "Internal server error." });
